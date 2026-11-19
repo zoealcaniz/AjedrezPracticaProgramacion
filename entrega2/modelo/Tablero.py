@@ -1,11 +1,11 @@
 
 
-import Pieza
-import Alfil
-import Caballo
-import Reina
-import Torre
-import Rey
+from entrega2.modelo.Pieza import Pieza
+from entrega2.modelo.Alfil import Alfil
+from entrega2.modelo.Caballo import Caballo
+from entrega2.modelo.Reina import Reina
+from entrega2.modelo.Torre import Torre
+from entrega2.modelo.Rey import Rey
 from entrega2.modelo.Peon import Peon
 
 

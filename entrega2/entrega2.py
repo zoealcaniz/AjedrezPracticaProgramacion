@@ -30,14 +30,14 @@ tablero_simbolos: list[list[str]] = [
 # Crear el tablero con los nombres de las piezas
 # Para luego consultar a este que pieza se encuentra en cada casilla.
 tablero_nombres: list[list[str]] = [
-    ["Torre negra", "Caballo negra", "Alfil negro", "Dama negra", "Rey negro", "Alfil negro", "Caballo negro", "Torre negra"],
+    ["Torre negra", "Caballo negro", "Alfil negro", "Dama negra", "Rey negro", "Alfil negro", "Caballo negro", "Torre negra"],
     ["Peón negro", "Peón negro", "Peón negro", "Peón negro", "Peón negro", "Peón negro", "Peón negro", "Peón negro"],
     ["", "", "", "", "", "", "", ""],
     ["", "", "", "", "", "", "", ""],
     ["", "", "", "", "", "", "", ""],
     ["", "", "", "", "", "", "", ""],
     ["Peón blanco", "Peón blanco", "Peón blanco", "Peón blanco", "Peón blanco", "Peón blanco", "Peón blanco", "Peón blanco"],
-    ["Torre blanca", "Caballo blanca", "Alfil blanco", "Dama blanca", "Rey blanco", "Alfil blanco", "Caballo blanco", "Torre blanca"]
+    ["Torre blanca", "Caballo blanco", "Alfil blanco", "Dama blanca", "Rey blanco", "Alfil blanco", "Caballo blanco", "Torre blanca"]
 ]
 
 # **********
