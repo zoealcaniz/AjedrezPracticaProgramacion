@@ -22,6 +22,8 @@ class Torre(Pieza):
         destino: tuple[int, int],
     ) -> bool:
         """Valida movimiento horizontal o vertical con camino despejado."""
+        if origen == destino:
+            return False
         if origen[0] != destino[0] and origen[1] != destino[1]:
             return False
         return tablero.camino_libre(origen, destino)

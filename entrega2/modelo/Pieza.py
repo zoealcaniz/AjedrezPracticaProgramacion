@@ -7,6 +7,7 @@ if TYPE_CHECKING:
 class Pieza:
     """Representa una pieza genérica del tablero de ajedrez."""
     def __init__(self, color: str, simbolo: str, nombre: str):
+        """Inicializa una pieza con su color, símbolo y nombre."""
         self.color: str = color
         self.simbolo: str = simbolo
         self.nombre: str = nombre

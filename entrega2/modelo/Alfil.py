@@ -11,6 +11,7 @@ class Alfil(Pieza):
     """Pieza que se mueve en diagonal cualquier número de casillas."""
 
     def __init__(self, color: str) -> None:
+        """Inicializa un alfil con su color, símbolo y nombre."""
         simbolo: str = "\u2657" if color == "blancas" else "\u265D"
         nombre: str = "Alfil blanco" if color == "blancas" else "Alfil negro"
         super().__init__(color, simbolo, nombre)
