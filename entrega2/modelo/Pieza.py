@@ -1,7 +1,8 @@
+from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .Tablero import Tablero  # Solo se importa mientras el editor revisa el código, no al ejecutar
+    from modelo.Tablero import Tablero
 
 class Pieza:
     """Representa una pieza genérica del tablero de ajedrez."""

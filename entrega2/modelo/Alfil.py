@@ -1,5 +1,10 @@
-import Pieza
-from entrega2.modelo import Tablero
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from modelo.Tablero import Tablero
+
+from modelo.Pieza import Pieza
 
 class Alfil(Pieza):
     

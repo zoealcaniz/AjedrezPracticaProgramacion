@@ -1,5 +1,10 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
 
-from entrega2.modelo.Pieza import Pieza
+if TYPE_CHECKING:
+    from modelo.Tablero import Tablero
+
+from modelo.Pieza import Pieza
 
 class Peon(Pieza):
     """Pieza que avanza hacia delante y captura en diagonal."""
@@ -15,8 +20,8 @@ class Peon(Pieza):
         destino: tuple[int, int],
     ) -> bool:
         """Valida avance simple, doble inicial y captura diagonal según el color."""
-        direccion: int = 1 if self.color == "blancas" else -1
-        fila_inicial: int = 1 if self.color == "blancas" else 6
+        direccion: int = -1 if self.color == "blancas" else 1
+        fila_inicial: int = 6 if self.color == "blancas" else 1
 
         dif_filas: int = destino[0] - origen[0]
         dif_cols: int = abs(destino[1] - origen[1])
