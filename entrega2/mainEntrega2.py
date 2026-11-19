@@ -1,6 +1,6 @@
 """
 Punto de entrada principal del proyecto de ajedrez (Entrega 2).
-Ejecutar desde la carpeta raíz con: python -m entrega2.main
+Ejecutar desde la carpeta entrega2 con: python mainEntrega2.py
 """
 
 from modelo.Tablero import Tablero
@@ -42,7 +42,7 @@ def f_parsear_movimiento(
 
 
 def main() -> None:
-    """Bucle principal de prueba para tablero y movimientos básicos."""
+    """Bucle principal con validación de turno, reglas, jaque y fin de partida."""
     tablero: Tablero = Tablero()
     tablero.imprimir_tablero()
 
@@ -50,6 +50,8 @@ def main() -> None:
 
     while estado != "fin_partida":
         color_turno: str = "blancas" if estado == "turno_blancas" else "negras"
+        color_rival: str = "negras" if color_turno == "blancas" else "blancas"
+
         print(f"Turno de las {color_turno}")
         entrada: str = input("Movimiento (ej. e2 e4) o 'salir': ").strip().lower()
 
@@ -61,13 +63,42 @@ def main() -> None:
                 f_parsear_movimiento(entrada)
             )
             if coords is None:
-                print("Formato no válido. Escribe origen y destino, por ejemplo: e2 e4")
-            else:
-                tablero.mover_pieza(coords[0], coords[1])
-                tablero.imprimir_tablero()
-                estado = (
-                    "turno_negras" if estado == "turno_blancas" else "turno_blancas"
+                print(
+                    "Formato no válido. Escribe origen y destino, por ejemplo: e2 e4"
                 )
+            else:
+                origen: tuple[int, int]
+                destino: tuple[int, int]
+                origen, destino = coords
+                motivo: str = tablero.validar_movimiento(
+                    origen, destino, color_turno
+                )
+
+                if motivo != "":
+                    print(f"Movimiento rechazado: {motivo}")
+                else:
+                    tablero.mover_pieza(origen, destino)
+                    tablero.imprimir_tablero()
+
+                    rival_en_jaque: bool = tablero.esta_en_jaque(color_rival)
+                    rival_tiene_movs: bool = tablero.tiene_movimientos_validos(
+                        color_rival
+                    )
+
+                    if not rival_tiene_movs:
+                        if rival_en_jaque:
+                            print(f"Jaque mate. Ganan las {color_turno}.")
+                        else:
+                            print("Tablas por rey ahogado.")
+                        estado = "fin_partida"
+                    else:
+                        if rival_en_jaque:
+                            print(f"Jaque a las {color_rival}.")
+                        estado = (
+                            "turno_negras"
+                            if estado == "turno_blancas"
+                            else "turno_blancas"
+                        )
 
 
 if __name__ == "__main__":
