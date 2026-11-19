@@ -78,6 +78,7 @@ def main() -> None:
                     print(f"Movimiento rechazado: {motivo}")
                 else:
                     tablero.mover_pieza(origen, destino)
+                    print(f"Movimiento realizado: {entrada.split()[0]} -> {entrada.split()[1]}")
                     tablero.imprimir_tablero()
 
                     rival_en_jaque: bool = tablero.esta_en_jaque(color_rival)

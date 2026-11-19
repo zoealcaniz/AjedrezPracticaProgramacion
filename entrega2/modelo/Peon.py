@@ -9,6 +9,7 @@ from modelo.Pieza import Pieza
 class Peon(Pieza):
     """Pieza que avanza hacia delante y captura en diagonal."""
     def __init__(self, color: str) -> None:
+        """Inicializa un peón con su color, símbolo y nombre."""
         simbolo: str = "\u2659" if color == "blancas" else "\u265F"
         nombre: str = "Peón blanco" if color == "blancas" else "Peón negro"
         super().__init__(color, simbolo, nombre)

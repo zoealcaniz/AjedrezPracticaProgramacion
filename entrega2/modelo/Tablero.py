@@ -182,6 +182,9 @@ class Tablero:
         if pieza_destino is not None and pieza_destino.color == turno:
             return "La casilla de destino está ocupada por una pieza propia."
 
+        if isinstance(pieza_destino, Rey):
+            return "No se puede capturar al rey contrario."
+
         if not pieza_origen.es_movimiento_valido(self, origen, destino):
             return f"Movimiento no permitido para esta pieza ({pieza_origen.nombre})."
 
