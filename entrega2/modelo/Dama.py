@@ -6,13 +6,13 @@ if TYPE_CHECKING:
 
 from modelo.Pieza import Pieza
 
-class Reina(Pieza):
+class Dama(Pieza):
     """Pieza que se mueve en línea recta o diagonal cualquier número de casillas."""
 
     def __init__(self, color: str) -> None:
-        """Inicializa una reina con su color, símbolo y nombre."""
+        """Inicializa una Dama con su color, símbolo y nombre."""
         simbolo: str = "\u2655" if color == "blancas" else "\u265B"
-        nombre: str = "Reina blanca" if color == "blancas" else "Reina negra"
+        nombre: str = "Dama blanca" if color == "blancas" else "Dama negra"
         super().__init__(color, simbolo, nombre)
 
     def es_movimiento_valido(

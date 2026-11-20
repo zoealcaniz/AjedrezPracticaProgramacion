@@ -4,6 +4,12 @@ Ejecutar desde la carpeta entrega2 con: python mainEntrega2.py
 """
 
 from modelo.Tablero import Tablero
+from historial import (
+    guardar_historial,
+    cargar_historial,
+    exportar_historial_csv
+)
+import os
 
 TAMANO_TABLERO: int = 8
 LETRAS_VALIDAS: str = "abcdefgh"
@@ -44,20 +50,101 @@ def f_parsear_movimiento(
 def main() -> None:
     """Bucle principal con validación de turno, reglas, jaque y fin de partida."""
     tablero: Tablero = Tablero()
-    tablero.imprimir_tablero()
-
+    historial: list[str] = []
     estado: str = "turno_blancas"
+
+    if os.path.exists("partida.txt"):
+        respuesta: str = input(
+            "Existe una partida guardada. ¿Quieres continuarla? (s/n): "
+        ).strip().lower()
+
+        if respuesta == "s":
+            movimientos_guardados: list[str] = cargar_historial("partida.txt")
+
+            tablero_cargado: Tablero = Tablero()
+            turno_carga: str = "blancas"
+            archivo_valido: bool = True
+            partida_terminada: bool = False
+
+            for indice, movimiento in enumerate(movimientos_guardados):
+
+                coords: tuple[tuple[int, int], tuple[int, int]] | None = (
+                    f_parsear_movimiento(movimiento)
+                )
+
+                if coords is None:
+                    archivo_valido = False
+                    break
+                origen: tuple[int, int]
+                destino: tuple[int, int]
+                origen, destino = coords
+
+                motivo: str = tablero_cargado.validar_movimiento(
+                    origen, destino, turno_carga
+                )
+
+                if motivo != "":
+                    archivo_valido = False
+                    break
+
+                tablero_cargado.mover_pieza(origen, destino)
+
+                color_rival: str = (
+                    "negras" if turno_carga == "blancas" else "blancas"
+                )
+
+                rival_en_jaque: bool = tablero_cargado.esta_en_jaque(
+                    color_rival
+                )
+
+                rival_tiene_movs: bool = tablero_cargado.tiene_movimientos_validos(
+                    color_rival
+                )
+
+                if not rival_tiene_movs:
+                    partida_terminada = True
+
+                    if indice != len(movimientos_guardados) - 1:
+                        archivo_valido = False
+
+                    break
+
+                turno_carga = color_rival
+
+            if not archivo_valido:
+                print("El archivo guardado no es válido. Se empieza una partida nueva.")
+
+            elif partida_terminada:
+                print("La partida guardada ya había terminado. Se empieza una nueva.")
+
+            else:
+                tablero = tablero_cargado
+                historial = movimientos_guardados
+
+                if len(historial) % 2 == 1:
+                    estado = "turno_negras"
+                else:
+                    estado = "turno_blancas"
+
+                print("Partida cargada correctamente.")
+
+    tablero.imprimir_tablero()
 
     while estado != "fin_partida":
         color_turno: str = "blancas" if estado == "turno_blancas" else "negras"
         color_rival: str = "negras" if color_turno == "blancas" else "blancas"
 
         print(f"Turno de las {color_turno}")
-        entrada: str = input("Movimiento (ej. e2 e4) o 'salir': ").strip().lower()
+        entrada: str = input("Movimiento (ej. e2 e4), 'exportar' o 'salir': ").strip().lower()
 
         if entrada == "salir":
             estado = "fin_partida"
             print("Fin de la partida.")
+
+        elif entrada == "exportar":
+            exportar_historial_csv(historial, "partida.csv")
+            print("Historial exportado correctamente.")
+
         else:
             coords: tuple[tuple[int, int], tuple[int, int]] | None = (
                 f_parsear_movimiento(entrada)
@@ -79,6 +166,9 @@ def main() -> None:
                 else:
                     tablero.mover_pieza(origen, destino)
                     print(f"Movimiento realizado: {entrada.split()[0]} -> {entrada.split()[1]}")
+                    historial.append(" ".join(entrada.split()))
+                    guardar_historial(historial, "partida.txt")
+
                     tablero.imprimir_tablero()
 
                     rival_en_jaque: bool = tablero.esta_en_jaque(color_rival)
