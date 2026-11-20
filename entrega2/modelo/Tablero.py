@@ -1,7 +1,7 @@
 from modelo.Pieza import Pieza
 from modelo.Alfil import Alfil
 from modelo.Caballo import Caballo
-from modelo.Reina import Reina
+from modelo.Dama import Dama
 from modelo.Torre import Torre
 from modelo.Rey import Rey
 from modelo.Peon import Peon
@@ -27,7 +27,7 @@ class Tablero:
             Torre("negras"),
             Caballo("negras"),
             Alfil("negras"),
-            Reina("negras"),
+            Dama("negras"),
             Rey("negras"),
             Alfil("negras"),
             Caballo("negras"),
@@ -49,7 +49,7 @@ class Tablero:
             Torre("blancas"),
             Caballo("blancas"),
             Alfil("blancas"),
-            Reina("blancas"),
+            Dama("blancas"),
             Rey("blancas"),
             Alfil("blancas"),
             Caballo("blancas"),
@@ -116,7 +116,7 @@ class Tablero:
             if (pieza.color == "blancas" and destino[0] == 0) or (
                 pieza.color == "negras" and destino[0] == 7
             ):
-                self.casillas[destino[0]][destino[1]] = Reina(pieza.color)
+                self.casillas[destino[0]][destino[1]] = Dama(pieza.color)
 
     def buscar_rey(self, color: str) -> tuple[int, int] | None:
         """Localiza y devuelve las coordenadas (fila, col) del rey del color indicado."""
@@ -148,7 +148,7 @@ class Tablero:
     def deja_rey_en_jaque(
         self, origen: tuple[int, int], destino: tuple[int, int], color: str
     ) -> bool:
-        """Simula el movimiento, verifica si el propio rey queda en jaque y restaura."""
+        """Comprueba si un movimiento deja al rey propio en jaque, simulándolo y restaurando el tablero."""        
         pieza_origen: Pieza | None = self.casillas[origen[0]][origen[1]]
         pieza_destino: Pieza | None = self.casillas[destino[0]][destino[1]]
 
