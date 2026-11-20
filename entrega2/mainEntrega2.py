@@ -4,6 +4,7 @@ Ejecutar desde la carpeta entrega2 con: python mainEntrega2.py
 """
 
 from modelo.Tablero import Tablero
+from historial import guardar_historial, exportar_historial_csv
 
 TAMANO_TABLERO: int = 8
 LETRAS_VALIDAS: str = "abcdefgh"
@@ -44,6 +45,7 @@ def f_parsear_movimiento(
 def main() -> None:
     """Bucle principal con validación de turno, reglas, jaque y fin de partida."""
     tablero: Tablero = Tablero()
+    historial: list[str] = []
     tablero.imprimir_tablero()
 
     estado: str = "turno_blancas"
@@ -53,11 +55,16 @@ def main() -> None:
         color_rival: str = "negras" if color_turno == "blancas" else "blancas"
 
         print(f"Turno de las {color_turno}")
-        entrada: str = input("Movimiento (ej. e2 e4) o 'salir': ").strip().lower()
+        entrada: str = input("Movimiento (ej. e2 e4), 'exportar' o 'salir': ").strip().lower()
 
         if entrada == "salir":
             estado = "fin_partida"
             print("Fin de la partida.")
+
+        elif entrada == "exportar":
+            exportar_historial_csv(historial, "partida.csv")
+            print("Historial exportado correctamente.")
+
         else:
             coords: tuple[tuple[int, int], tuple[int, int]] | None = (
                 f_parsear_movimiento(entrada)
@@ -79,6 +86,9 @@ def main() -> None:
                 else:
                     tablero.mover_pieza(origen, destino)
                     print(f"Movimiento realizado: {entrada.split()[0]} -> {entrada.split()[1]}")
+                    historial.append(" ".join(entrada.split()))
+                    guardar_historial(historial, "partida.txt")
+
                     tablero.imprimir_tablero()
 
                     rival_en_jaque: bool = tablero.esta_en_jaque(color_rival)
