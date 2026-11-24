@@ -1,5 +1,6 @@
 """
-Módulo para guardar, cargar y exportar el historial de movimientos de la partida.
+Capa de infraestructura: persistencia de la partida en archivos de texto y CSV.
+Gestiona la lectura y escritura de partida.txt y la exportación a partida.csv.
 """
 
 import csv
@@ -37,7 +38,7 @@ def f_exportar_historial_csv(movimientos: list[str], ruta: Path) -> None:
         for indice, movimiento in enumerate(movimientos):
             partes: list[str] = movimiento.split()
 
-            # Los índices pares son turno de blancas, los impares de negras
+            # Los índices pares corresponden al turno de blancas, los impares al de negras
             turno: str = "blancas" if indice % 2 == 0 else "negras"
 
             escritor.writerow([indice + 1, turno, partes[0], partes[1]])
@@ -59,7 +60,7 @@ def f_cargar_historial(ruta: Path) -> list[str]:
             for linea in archivo:
                 movimiento: str = linea.strip()
 
-                # Ignora líneas vacías
+                # Ignorar líneas vacías
                 if movimiento != "":
                     movimientos.append(movimiento)
 

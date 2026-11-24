@@ -2,9 +2,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from modelo.Tablero import Tablero
+    from dominio.Tablero import Tablero
 
-from modelo.Pieza import Pieza
+from dominio.Pieza import Pieza
 
 
 class Caballo(Pieza):

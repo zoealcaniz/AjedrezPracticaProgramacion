@@ -1,17 +1,21 @@
-from modelo.Pieza import Pieza
-from modelo.Alfil import Alfil
-from modelo.Caballo import Caballo
-from modelo.Dama import Dama
-from modelo.Torre import Torre
-from modelo.Rey import Rey
-from modelo.Peon import Peon
+"""
+Capa de dominio: tablero de ajedrez con las reglas y operaciones sobre las piezas.
+No contiene ninguna lógica de entrada/salida ni acceso a archivos.
+"""
+
+from dominio.Pieza import Pieza
+from dominio.Alfil import Alfil
+from dominio.Caballo import Caballo
+from dominio.Dama import Dama
+from dominio.Torre import Torre
+from dominio.Rey import Rey
+from dominio.Peon import Peon
 
 
 class Tablero:
     """Guarda la posición de las piezas y las operaciones sobre el tablero."""
 
     TAMANO: int = 8
-    LETRAS_VALIDAS: str = "abcdefgh"
 
     def __init__(self) -> None:
         """Inicializa un tablero 8x8 vacío y coloca las piezas iniciales."""
@@ -55,28 +59,6 @@ class Tablero:
             Caballo("blancas"),
             Torre("blancas"),
         ]
-
-    def f_imprimir_tablero(self) -> None:
-        """Imprime el tablero por consola con coordenadas a-h y 1-8 (fila 8 arriba)."""
-        # Construir la cabecera con las letras de columna
-        encabezado: str = " "
-        for indice_columna in range(self.TAMANO):
-            letra_columna: str = self.LETRAS_VALIDAS[indice_columna]
-            encabezado = encabezado + " " + letra_columna + " "
-        print(encabezado)
-
-        # Imprimir cada fila con su número a la izquierda
-        for indice_fila in range(self.TAMANO):
-            numero_fila: int = self.TAMANO - indice_fila
-            linea: str = str(numero_fila)
-            for indice_columna in range(self.TAMANO):
-                pieza: Pieza | None = self.casillas[indice_fila][indice_columna]
-                if pieza is None:
-                    celda: str = " . "
-                else:
-                    celda = " " + pieza.simbolo + " "
-                linea = linea + celda
-            print(linea)
 
     def f_obtener_pieza(self, pos: tuple[int, int]) -> Pieza | None:
         """
