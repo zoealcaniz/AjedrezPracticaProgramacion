@@ -1,52 +1,66 @@
+"""
+Módulo para guardar, cargar y exportar el historial de movimientos de la partida.
+"""
+
 import csv
-import os
-from typing import Any, TextIO
+from pathlib import Path
 
-def guardar_historial(movimientos: list[str], ruta: str) -> None:
-    """Guarda todos los movimientos de la partida en un fichero."""
 
-    archivo: TextIO = open(ruta, "w", encoding="utf-8")
-    for movimiento in movimientos:
-        archivo.write(movimiento + "\n")
+def f_guardar_historial(movimientos: list[str], ruta: Path) -> None:
+    """
+    Guarda todos los movimientos de la partida en un fichero de texto.
 
-    archivo.close()
+    Parámetros:
+        movimientos: lista de cadenas con cada movimiento (ej. 'e2 e4').
+        ruta: ruta del archivo donde se guardarán los movimientos.
+    """
+    # Sobrescribe el archivo con todos los movimientos actuales
+    with open(ruta, "w", encoding="utf-8") as archivo:
+        for movimiento in movimientos:
+            archivo.write(movimiento + "\n")
 
-def exportar_historial_csv(movimientos: list[str], ruta: str) -> None:
-    """Exporta los movimientos de la partida a un archivo CSV."""
 
-    archivo: TextIO = open(ruta, "w", newline="", encoding="utf-8")
-    escritor: Any = csv.writer(archivo)
+def f_exportar_historial_csv(movimientos: list[str], ruta: Path) -> None:
+    """
+    Exporta los movimientos de la partida a un archivo CSV con columnas numeradas.
 
-    escritor.writerow(["numero", "turno", "origen", "destino"])
+    Parámetros:
+        movimientos: lista de cadenas con cada movimiento (ej. 'e2 e4').
+        ruta: ruta del archivo CSV donde se exportará el historial.
+    """
+    with open(ruta, "w", newline="", encoding="utf-8") as archivo:
+        escritor = csv.writer(archivo)
 
-    for indice, movimiento in enumerate(movimientos):
-        partes: list[str] = movimiento.split()
+        # Cabecera del CSV
+        escritor.writerow(["numero", "turno", "origen", "destino"])
 
-        turno: str = "blancas" if indice % 2 == 0 else "negras"
+        for indice, movimiento in enumerate(movimientos):
+            partes: list[str] = movimiento.split()
 
-        escritor.writerow([
-            indice + 1,
-            turno,
-            partes[0],
-            partes[1]
-        ])
+            # Los índices pares son turno de blancas, los impares de negras
+            turno: str = "blancas" if indice % 2 == 0 else "negras"
 
-    archivo.close()
+            escritor.writerow([indice + 1, turno, partes[0], partes[1]])
 
-def cargar_historial(ruta: str) -> list[str]:
-    """Lee los movimientos guardados en un fichero y los devuelve en una lista."""
 
+def f_cargar_historial(ruta: Path) -> list[str]:
+    """
+    Lee los movimientos guardados en un fichero y los devuelve en una lista.
+
+    Parámetros:
+        ruta: ruta del archivo de texto con los movimientos guardados.
+    Devuelve:
+        Lista de cadenas con cada movimiento, o lista vacía si el archivo no existe.
+    """
     movimientos: list[str] = []
 
-    if os.path.exists(ruta):
-        archivo: TextIO = open(ruta, "r", encoding="utf-8")
+    if ruta.exists():
+        with open(ruta, "r", encoding="utf-8") as archivo:
+            for linea in archivo:
+                movimiento: str = linea.strip()
 
-        for linea in archivo:
-            movimiento: str = linea.strip()
-
-            if movimiento != "":
-                movimientos.append(movimiento)
-
-        archivo.close()
+                # Ignora líneas vacías
+                if movimiento != "":
+                    movimientos.append(movimiento)
 
     return movimientos
